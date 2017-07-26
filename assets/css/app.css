@@ -94,6 +94,9 @@ input[type="radio"], input[type="checkbox"] {
 .null {
     background-color: #ffffff;
 }
+.navbar {
+    background-color: #7E2323;
+}
 .navbar .navbar-brand {
   font-weight: bold;
   font-size: 25px;
@@ -114,7 +117,7 @@ input[type="radio"], input[type="checkbox"] {
 }
 
 @media (max-width: 992px) {
-  .navbar .navbar-brand {
+  .navbar .navbar-brand{
     font-size: 18px;
   }
 }

@@ -12,27 +12,27 @@
 
 //get limlevy data -- dont do anything else until then
 
-var limlevy;
-var districtsonly = [];
-var districtsbb = [];
+// var limlevy;
+// var districtsonly = [];
+// var districtsbb = [];
 
-//geocoder values
-$.getJSON("https://storage.googleapis.com/co-publicdata/geopts.json", function(geopts) {
+// //geocoder values
+// $.getJSON("https://storage.googleapis.com/co-publicdata/geopts.json", function(geopts) {
 
-    //create data objects for geocoder
-    for (i = 0; i < geopts.length; i++) {
-        districtsonly.push(geopts[i].lgid);
-        districtsonly.push(geopts[i].lgname)
-        districtsbb.push(geopts[i].bbox);
-        districtsbb.push(geopts[i].bbox);
-    }
+//     //create data objects for geocoder
+//     for (i = 0; i < geopts.length; i++) {
+//         districtsonly.push(geopts[i].lgid);
+//         districtsonly.push(geopts[i].lgname)
+//         districtsbb.push(geopts[i].bbox);
+//         districtsbb.push(geopts[i].bbox);
+//     }
 
-    $.getJSON("https://dola.colorado.gov/gis-tmp/limlevy.json", function(json) {
-        limlevy = json;
-        init();
+//     $.getJSON("https://dola.colorado.gov/gis-tmp/limlevy.json", function(json) {
+//         limlevy = json;
+//         init();
 
-    });
-});
+//     });
+// });
 
 // $(function() {
 //     $("#feature-info.mhi").each(function(index) {
@@ -47,14 +47,14 @@ $.getJSON("https://storage.googleapis.com/co-publicdata/geopts.json", function(g
 //     });
 // });
 
-//init();
+init();
 
 function init() {
 
 
     var map, globalbusy, geojsonLayer, lastzoom, active = '1',
-        filter = 'place',
-        titleGeo = 'Place',
+        filter = 'muni',
+        titleGeo = 'Muni',
         limit = 1000,
         lgid = "";
     //active = whether to show inactive districts.  Active=0 : show all, including inactive.  Active=1 : show only active
@@ -70,126 +70,106 @@ function init() {
 
     //Leaflet Custom Control
     //create the custom control div in upper left
-    L.Control.Command = L.Control.extend({
-        options: {
-            position: 'topleft',
-        },
+    // L.Control.Command = L.Control.extend({
+    //     options: {
+    //         position: 'topleft',
+    //     },
 
-        onAdd: function(map) {
+    //     onAdd: function(map) {
 
-            var controlDiv = L.DomUtil.create('div', 'leaflet-control-command');
+    //         var controlDiv = L.DomUtil.create('div', 'leaflet-control-command');
 
-            var controlUI = L.DomUtil.create('div', 'leaflet-control-command-interior', controlDiv);
-            controlUI.title = 'Census Geography';
-            var textdiv = L.DomUtil.create('div', 'ctrldesc', controlUI);
-            var divsec = L.DomUtil.create('b', 'titletext', textdiv);
-            divsec.innerHTML = 'Choose a Geography';
+    //         var controlUI = L.DomUtil.create('div', 'leaflet-control-command-interior', controlDiv);
+    //         controlUI.title = 'Census Geography';
+    //         var textdiv = L.DomUtil.create('div', 'ctrldesc', controlUI);
+    //         var divsec = L.DomUtil.create('b', 'titletext', textdiv);
+    //         divsec.innerHTML = 'Choose a Geography';
 
-            var hrbreak = L.DomUtil.create('hr', '', controlUI);
-            hrbreak.id = "hrcss";
+    //         var hrbreak = L.DomUtil.create('hr', '', controlUI);
+    //         hrbreak.id = "hrcss";
 
-            var opt1div = L.DomUtil.create('div', '', controlUI);
-            opt1div.id = 'opt1div';
-            var selectUI = L.DomUtil.create('select', 'seldiv', opt1div);
-            selectUI.title = 'Select District Category';
+    //         var opt1div = L.DomUtil.create('div', '', controlUI);
+    //         opt1div.id = 'opt1div';
+    //         var selectUI = L.DomUtil.create('select', 'seldiv', opt1div);
+    //         selectUI.title = 'Select District Category';
 
-            L.DomEvent
-                .addListener(selectUI, 'change', L.DomEvent.stopPropagation)
-                .addListener(selectUI, 'change', L.DomEvent.preventDefault)
-                .addListener(selectUI, 'change', refilter);
+    //         L.DomEvent
+    //             .addListener(selectUI, 'change', L.DomEvent.stopPropagation)
+    //             .addListener(selectUI, 'change', L.DomEvent.preventDefault)
+    //             .addListener(selectUI, 'change', refilter);
 
-            var option;
-            var inputdata = "Place||County||Tract||Block Group";
+    //         var option;
+    //         var inputdata = "Place||County||Tract||Block Group";
 
-            inputdata.split('||').forEach(function(item) {
-                option = document.createElement('option');
-                option.value = option.textContent = item;
-                selectUI.appendChild(option);
-            });
+    //         inputdata.split('||').forEach(function(item) {
+    //             option = document.createElement('option');
+    //             option.value = option.textContent = item;
+    //             selectUI.appendChild(option);
+    //         });
 
-            var opt2div = L.DomUtil.create('div', '', controlUI);
-            opt2div.id = 'opt2div';
-            opt2div.style.display = 'none';
-            opt2div.className = "form-group has-feedback";
+    //         var opt2div = L.DomUtil.create('div', '', controlUI);
+    //         opt2div.id = 'opt2div';
+    //         opt2div.style.display = 'none';
+    //         opt2div.className = "form-group has-feedback";
 
-            var w = L.DomUtil.create('input', '', opt2div);
+    //         var w = L.DomUtil.create('input', '', opt2div);
 
-            w.id = "slgid";
-            w.class = 'typeahead';
-            w.type = 'text';
-            w.placeholder = "Search Districts";
-            w.className = "form-control typeahead";
+    //         w.id = "slgid";
+    //         w.class = 'typeahead';
+    //         w.type = 'text';
+    //         w.placeholder = "Search Districts";
+    //         w.className = "form-control typeahead";
 
-            return controlDiv;
-        }
-    });
+    //         return controlDiv;
+    //     }
+    // });
 
-    L.control.command = function(options) {
-        return new L.Control.Command(options);
-    };
+    // L.control.command = function() {
+    //     return new L.Control.Command();
+    // };
     
 
 
-    //switch control from dropdown search to district searchbox
-    // function showhide() {
 
-    //     var typediv = document.getElementById("opt1div");
-    //     var namediv = document.getElementById("opt2div");
-    //     var hrcss = document.getElementById("hrcss");
-
-    //     if ($('#rtype').is(':checked')) {
-    //         typediv.style.display = 'inline';
-    //         namediv.style.display = 'none';
-    //         hrcss.style.marginBottom = "5px";
-    //         lgid = "";
-    //         ajaxcall();
-    //     } else {
-    //         document.getElementById("slgid").value = "";
-    //         typediv.style.display = 'none';
-    //         namediv.style.display = 'inline';
-    //         hrcss.style.marginBottom = "15px";
-    //     }
-
-    // }
 
     //sets global variable 'filter' equal to a comma separated list of lgtypeids.  Then gets those shapes from database.
-    function refilter() {
+    // function refilter() {
 
-        var ischecked = $('#ischk').is(':checked');
-        var districtfilter = $('.seldiv :selected').text();
+    //     var ischecked = $('#ischk').is(':checked');
+    //     var districtfilter = $('.seldiv :selected').text();
 
-        switch (districtfilter) {
-            case 'County':
-                //filter = "50";
-                filter = 'county';
-                titleGeo = 'County';
-                break;
-            case 'Place':
-                //filter = "160";
-                filter = 'place';
-                titleGeo = 'Place';
-                break;
-            case 'Tract':
-                //filter = "140";
-                filter = 'tract';
-                titleGeo = 'Tract';
-                break;
-            case 'Block Group':
-                //filter = "150";
-                filter = 'bg';
-                titleGeo = 'BG';
-                break;
-        }
+    //     switch (districtfilter) {
+    //         case 'County':
+    //             //filter = "50";
+    //             filter = 'county';
+    //             titleGeo = 'County';
+    //             break;
+    //         case 'Place':
+    //             //filter = "160";
+    //             filter = 'place';
+    //             titleGeo = 'Place';
+    //             break;
+    //         case 'Tract':
+    //             //filter = "140";
+    //             filter = 'tract';
+    //             titleGeo = 'Tract';
+    //             break;
+    //         case 'Block Group':
+    //             //filter = "150";
+    //             filter = 'bg';
+    //             titleGeo = 'BG';
+    //             break;
+    //     }
 
-        if (ischecked) {
-            active = '0';
-        } else {
-            active = '1';
-        }
+    //     if (ischecked) {
+    //         active = '0';
+    //     } else {
+    //         active = '1';
+    //     }
 
-        ajaxcall();
+    //ajaxcall();
 
-    }
+    // }
 
     $(window).resize(function() {
         sizeLayerControl();
@@ -237,7 +217,8 @@ function init() {
         newbounds = (coord.swlng - diff2) + "," + (coord.swlat - diff1) + "," + (coord.nelng + diff2) + "," + (coord.nelat + diff1);
         
         //geojsonLayer.refresh("https://gis.dola.colorado.gov/capi/geojson?limit=99999&db=acs1115&schema=data&table=b19013&sumlev=" + filter + "&type=json&state=8"); //add a new layer replacing whatever is there
-        geojsonLayer.refresh("assets/data/srf_acs_" + filter + ".geojson")
+        geojsonLayer.refresh("assets/data/muni.geojson")
+        map.addLayer(geojsonLayer);
         
        if (window.searchControl)
            {
@@ -247,11 +228,11 @@ function init() {
        // Add search gadget for this layer      
        window.searchControl= new L.control.search({
          layer: geojsonLayer, 
-         propertyName: 'geoname',
+         propertyName: 'first_city',
          marker: false,
          collapsed: false,
-         zoom: 12,
-         textPlaceholder: 'Search selected geography'
+         zoom: 14,
+         textPlaceholder: 'Search Municipalities'
        });
 
        map.addControl(window.searchControl);
@@ -299,7 +280,7 @@ function init() {
     function stylefunc(feature) {
 
         var typical = {
-            color: "blue",
+            color: "green",
             weight: 1,
             fill: true,
             opacity: 1,
@@ -385,10 +366,10 @@ var graphicScale = L.control.graphicScale().addTo(map);
         'zIndex': 100
     });
 
-    var LeafletFilterControl = L.control.command({
-        postion: 'topleft'
-    });
-    map.addControl(LeafletFilterControl);
+    // var LeafletFilterControl = L.control.command({
+    //     postion: 'topleft'
+    // });
+    // map.addControl(LeafletFilterControl);
 
 
     /* Attribution control */ //bootleaf
@@ -477,41 +458,7 @@ var graphicScale = L.control.graphicScale().addTo(map);
     }).addTo(map);
 
 
-    //sweet geocoder control : https://github.com/perliedman/leaflet-control-geocoder, modified to use my MapBox
-    // var geocoders = {
-    //         'Mapbox': L.Control.Geocoder.mapbox(L.mapbox.accessToken)
-    //     },
-    //     selector = L.DomUtil.get('geocode-selector'),
-    //     control = new L.Control.Geocoder({
-    //         geocoder: null
-    //     }),
-    //     btn,
-    //     selection,
-    //     marker;
 
-    // function select(geocoder, el) {
-    //     if (selection) {
-    //         L.DomUtil.removeClass(selection, 'selected');
-    //     }
-
-    //     control.options.geocoder = geocoder;
-    //     L.DomUtil.addClass(el, 'selected');
-    //     selection = el;
-    // }
-
-    // for (var name in geocoders) {
-    //     btn = L.DomUtil.create('button', 'leaflet-bar', selector);
-    //     btn.innerHTML = name;
-    //     (function(n) {
-    //         L.DomEvent.addListener(btn, 'click', function() {
-    //             select(geocoders[n], this);
-    //         }, btn);
-    //     })(name);
-
-    //     if (!selection) {
-    //         select(geocoders[name], btn);
-    //     }
-    // }
 
 
     // control.addTo(map);
@@ -568,66 +515,6 @@ var graphicScale = L.control.graphicScale().addTo(map);
 
 
 
-    //Typeahead (Name or ID Search)
-    // {
-
-    //     $('#opt2div .typeahead').typeahead({
-    //         hint: true,
-    //         highlight: true,
-    //         minLength: 4
-    //     }, {
-    //         name: 'districtsonly',
-    //         displayKey: 'value',
-    //         source: substringMatcher(districtsonly)
-    //     });
-
-    //     $('#opt2div .typeahead').on('typeahead:select', function(e, datum) {
-    //         searchresult(datum);
-    //     }).on('typeahead:autocomplete', function(e, datum) {
-    //         searchresult(datum);
-    //     });
-
-    //     $('.typeahead').bind('typeahead:select', function(ev, suggestion) {
-    //         console.log('Selection: ' + suggestion);
-    //     });
-
-    // }
-
-    // function searchresult(result) {
-    //     console.log(result);
-    //     var id = result.value;
-    //     var strbb;
-    //     var southWest, northEast;
-    //     var bounds;
-    //     var firstchar;
-    //     var lgidindex;
-
-    //     for (var i in districtsonly) {
-    //         if (districtsonly[i] === id) {
-    //             strbb = districtsbb[i];
-    //             firstchar = (id.charAt(0));
-    //             if (firstchar === "0" || firstchar === "1" || firstchar === "2" || firstchar === "3" || firstchar === "4" || firstchar === "5" || firstchar === "6" || firstchar === "7" || firstchar === "8" || firstchar === "9") {
-    //                 lgidindex = i;
-    //             } else {
-    //                 lgidindex = i - 1;
-    //             }
-    //             //console.log(districtsonly[lgidindex]);
-    //         }
-
-    //     }
-
-    //     bbarray = strbb.split(',');
-    //     southWest = new L.LatLng(36.97, -109.1);
-    //     northEast = new L.LatLng(41.1, -101.97);
-    //     bounds = new L.LatLngBounds(southWest, northEast);
-    //     map.fitBounds(bounds);
-
-
-
-    //     lgid = '&lgid=' + districtsonly[lgidindex];
-    //     ajaxcall();
-    // }
-
 
 
     // Create a mouseout event that undoes the mouseover changes
@@ -675,7 +562,7 @@ var graphicScale = L.control.graphicScale().addTo(map);
         // Insert a headline into that popup
         if (titleGeo != "BG") {
             hed = $("<div></div>", {
-                text: titleGeo + ": " + fp.geoname,
+                text: titleGeo + ": " + fp.first_city,
                 css: {
                     fontSize: "16px",
                     marginBottom: "3px"
@@ -702,41 +589,39 @@ var graphicScale = L.control.graphicScale().addTo(map);
 
         if (feature.properties){
 
-            var tableColumns = "<tr><th>FACTOR</th><th>Value</th><th>BENCHMARK</th></tr>";
+            var tableColumns = "<tr><th>Field</th><th>Value</th></tr>";
             var bgname = "";
             var mhi_cv = feature.properties.b19013_moe001/1.645/feature.properties.b19013001*100;
             var mhv_cv = feature.properties.b25077_moe001/1.645/feature.properties.b25077001*100;
 
-            if (feature.properties.sdo_jobs_2006 > 0) {
+            // if (feature.properties.sdo_jobs_2006 > 0) {
                 var content = "<br /><table class='table table-striped table-bordered table-condensed'>" + tableColumns
-                        + "<tr><th>MHI</th><td class='mhi'>" + feature.properties.b19013001 + "</td><td>&#60;= Than $48,503 (80% of State MHI)</td></tr>"
-                        + "<tr><th style='text-indent:10px'>MHI_MOE</th><td class='mhi_moe'>" + feature.properties.b19013_moe001 + "</td><td></td></tr>"
-                        + "<tr style='border-bottom:3px solid black'><th style='text-indent:10px'>MHI_CV</th><td class='cv'>" + mhi_cv.toFixed(2) + "</td><td></td></tr>"
-                        + "<tr><th>MHV</th><td class='mhv'>" + feature.properties.b25077001 + "</td><td>&#60;= $247,800 (100% of State MHV)</td></tr>"
-                        + "<tr><th style='text-indent:10px'>MHV_MOE</th><td class='mhv_moe'>" + feature.properties.b25077_moe001 + "</td><td></td></tr>"
-                        + "<tr style='border-bottom:3px solid black'><th style='text-indent:10px'>MHV_CV</th><td class='cv'>" + mhv_cv.toFixed(2) + "</td><td></td></tr>"
-                        + "<tr><th>County 24-Month Unemployment</th><td class='unemp'>" + feature.properties.bls_unemp_avg + "</td><td>&#60;= 4.6%</td></tr>"
-                        + "<tr><th>County 10-Year Jobs Change</th><td class='job_change'>" + feature.properties.sdo_job_change + "</td><td>&#60;= 0</td></tr>"
-                        + "<tr><th style='text-indent:10px'>County Jobs 2006</th><td class='jobs_2006'>" + feature.properties.sdo_jobs_2006 + "</td><td></td></tr>"
-                        + "<tr><th style='text-indent:10px'>County Jobs 2015</th><td class='jobs_2015'>" + feature.properties.sdo_jobs_2015 + "</td><td></td></tr>"
+                        + "<tr><th>Municipality</th><td class='mhi'>" + feature.properties.first_city + "</td></tr>"
+                        + "<tr><th style='text-indent:10px'>Population</th><td class='mhi_moe'>" + feature.properties.Population + "</td></tr>"
+                        + "<tr><th style='text-indent:10px'>Sales Tax</th><td class='cv'>" + feature.properties.SalesTax + "</td></tr>"
+                        + "<tr><th>Use Tax</th><td class='mhv'>" + feature.properties.UseTax + "</td></tr>"
+                        + "<tr><th style='text-indent:10px'>Mill Levy</th><td class='mhv_moe'>" + feature.properties.MillLevy + "</td></tr>"
+                        + "<tr><th style='text-indent:10px'>County(s)</th><td class='cv'>" + feature.properties.County + "</td></tr>"
+                        + "<tr><th>Charter Type</th><td class='unemp'>" + feature.properties.Charter + "</td></tr>"
+                        + "<tr><th>Website</th><td class='job_change'>" + feature.properties.Website + "</td></tr>"
                         + "</table><br />";
-            } else {
-                 var content = "<br /><table class='table table-striped table-bordered table-condensed'>" + tableColumns
-                        + "<tr><th>MHI</th><td class='mhi'>" + feature.properties.b19013001 + "</td><td>&#60;= $48,503 (80% of State MHI)</td></tr>"
-                        + "<tr><th style='text-indent:10px'>MHI_MOE</th><td class='mhi_moe'>" + feature.properties.b19013_moe001 + "</td><td></td></tr>"
-                        + "<tr style='border-bottom:3px solid black'><th style='text-indent:10px'>MHI_CV</th><td class='cv'>" + mhi_cv.toFixed(2) + "</td><td></td></tr>"
-                        + "<tr><th>MHV</th><td class='mhv'>" + feature.properties.b25077001 + "</td><td>&#60;= $247,800 (100% of State MHV)</td></tr>"
-                        + "<tr><th style='text-indent:10px'>MHV_MOE</th><td class='mhv_moe'>" + feature.properties.b25077_moe001 + "</td><td></td></tr>"
-                        + "<tr style='border-bottom:3px solid black'><th style='text-indent:10px'>MHV_CV</th><td class='cv'>" + mhv_cv.toFixed(2) + "</td><td></td></tr>"
-                        + "<tr><th>County 24-Month Unemployment</th><td class='unemp'>" + "Contact DOLA Analyst" + "</td><td>&#60;= 4.6%</td></tr>"
-                        + "<tr><th>County 10-Year Jobs Change</th><td class='job_change'>" + "Contact DOLA Analyst" + "</td><td>&#60;= 0</td></tr>"
-                        + "<tr><th style='text-indent:10px'>County Jobs 2006</th><td class='jobs_2006'>" + "Contact DOLA Analyst" + "</td><td></td></tr>"
-                        + "<tr><th style='text-indent:10px'>County Jobs 2015</th><td class='jobs_2015'>" + "Contact DOLA Analyst" + "</td><td></td></tr>"
-                        + "</table><br />";
-            }
+            // } else {
+            //      var content = "<br /><table class='table table-striped table-bordered table-condensed'>" + tableColumns
+            //             + "<tr><th>MHI</th><td class='mhi'>" + feature.properties.b19013001 + "</td><td>&#60;= $48,503 (80% of State MHI)</td></tr>"
+            //             + "<tr><th style='text-indent:10px'>MHI_MOE</th><td class='mhi_moe'>" + feature.properties.b19013_moe001 + "</td><td></td></tr>"
+            //             + "<tr style='border-bottom:3px solid black'><th style='text-indent:10px'>MHI_CV</th><td class='cv'>" + mhi_cv.toFixed(2) + "</td><td></td></tr>"
+            //             + "<tr><th>MHV</th><td class='mhv'>" + feature.properties.b25077001 + "</td><td>&#60;= $247,800 (100% of State MHV)</td></tr>"
+            //             + "<tr><th style='text-indent:10px'>MHV_MOE</th><td class='mhv_moe'>" + feature.properties.b25077_moe001 + "</td><td></td></tr>"
+            //             + "<tr style='border-bottom:3px solid black'><th style='text-indent:10px'>MHV_CV</th><td class='cv'>" + mhv_cv.toFixed(2) + "</td><td></td></tr>"
+            //             + "<tr><th>County 24-Month Unemployment</th><td class='unemp'>" + "Contact DOLA Analyst" + "</td><td>&#60;= 4.6%</td></tr>"
+            //             + "<tr><th>County 10-Year Jobs Change</th><td class='job_change'>" + "Contact DOLA Analyst" + "</td><td>&#60;= 0</td></tr>"
+            //             + "<tr><th style='text-indent:10px'>County Jobs 2006</th><td class='jobs_2006'>" + "Contact DOLA Analyst" + "</td><td></td></tr>"
+            //             + "<tr><th style='text-indent:10px'>County Jobs 2015</th><td class='jobs_2015'>" + "Contact DOLA Analyst" + "</td><td></td></tr>"
+            //             + "</table><br />";
+            // }
             
-            var geonum2text = feature.properties.geonum.toString();
-            bgname = "BG " + geonum2text.substr(12,1) + ", Tract: " + geonum2text.substr(6,6);
+            // var geonum2text = feature.properties.geonum.toString();
+            // bgname = "BG " + geonum2text.substr(12,1) + ", Tract: " + geonum2text.substr(6,6);
 
             // console.log(content);
             // var altaddress = "";
@@ -747,26 +632,12 @@ var graphicScale = L.control.graphicScale().addTo(map);
 
             // var contact = "<br /><table class='table table-striped table-bordered table-condensed'>" + "<tr><th backgroundColor='red'>Mail Address</th><td backgroundColor='red'>" + feature.properties.mail_address + "</td></tr>" + altaddress + "<tr><th>City</th><td>" + feature.properties.mail_city + "</td></tr><tr><th>State</th><td>" + "CO" + "</td></tr><tr><th>Zip</th><td>" + feature.properties.mail_zip + "</td></tr></table><br />";
 
-            if (geonum2text.length < 13) {
-                var title = titleGeo + ": " + feature.properties.geoname;
-            } else {
-                var title = bgname;
-            }
-
-            // var detailed = "<br /><table class='table table-striped table-bordered table-condensed'><tr><th>Year</th><th>County</th><th>Subdistrict</th><th>Assessed Value</th><th>Levy</th></tr>";
-
-            // for (var i = 0; i < limlevy.length; i = i + 1) {
-            //     if (limlevy[i].LG_ID == feature.properties.lgid) {
-            //         if (limlevy[i].ASSESSED_VALUE !== "0") {
-            //             detailed = detailed + "<tr><td>" + limlevy[i].BUDGET_YEAR + "</td><td>" + clookup(limlevy[i].COUNTY) + "</td><td>" + limlevy[i].SUBDIST_NUM + "</td><td>$" + commafy(limlevy[i].ASSESSED_VALUE) + "</td><td>" + limlevy[i].TOTAL_LEVY + "</td></tr>";
-            //         }
-            //     }
+            // if (geonum2text.length < 13) {
+            //     var title = titleGeo + ": " + feature.properties.geoname;
+            // } else {
+            var title = feature.properties.first_city;
             // }
 
-            // detailed = detailed + "</table><br />"
-
-            // var newlink = "https://dola.colorado.gov/dlg_portal/filings.jsf?id=" + feature.properties.lgid;
-            //content = content.replace(feature.properties.b19013001,"$"+commafy(feature.properties.b19013001))
 
             layer.on({
                 click: function(e) {
@@ -777,129 +648,7 @@ var graphicScale = L.control.graphicScale().addTo(map);
                     
                     $("#featureModal").modal("show");
                     this.bringToBack(); //to deal with overlapping features.  click again and obscured feature is now on top
-                    $(function() {
-                        $(".mhi").each(function(index) {
-                            var scale = [['good', 0], ['null', 48503.2]];//, ['bad', 48503.2]];
-                            var score = $(this).text();
-                            for (var i = 0; i < scale.length; i++) {
-                                $(this).text("$"+commafy(feature.properties.b19013001));                                
-                                if (score <= 48503.2 && mhi_cv <= 12) {
-                                    $(this).addClass('good');
-                                }
-                                if (feature.properties.b19013001 + feature.properties.b19013_moe001 <= 48503.2) {
-                                    $(this).addClass('good');
-                                }
-                            }
-                        });
-                        $(".mhi_moe").each(function(index) {
-                            var scale = [['good', 0], ['null', 38802.6]];//, ['bad', 38802.6]];
-                            var score = parseInt($(this).text()) + parseInt(feature.properties.b19013001); //$(this).text() + mhi?
-                            console.log("MHI_MOE Score = " + score);
-                            for (var i = 0; i < scale.length; i++) {
-                                $(this).text("$"+commafy(feature.properties.b19013_moe001));
-                                // if ((score <= 38802.6)) {
-                                //     $(this).addClass('good');
-                                // }
-                            }
-                        });
-                        $(".mhv").each(function(index) {
-                            var scale = [['good', 0], ['null', 247800]];//, ['bad', 247800]];
-                            var score = $(this).text();
-                            for (var i = 0; i < scale.length; i++) {
-                                $(this).text("$"+commafy(feature.properties.b25077001));
-                                if (score <= 247800 && mhv_cv <=12) {
-                                    $(this).addClass('good');
-                                }
-                                if (feature.properties.b25077001 + feature.properties.b25077_moe001 <= 247800) {
-                                    $(this).addClass('good');
-                                }
-                            }
-                        });
-                        $(".mhv_moe").each(function(index) {
-                            var scale = [['good', 0], ['null', 247800]];//, ['bad', 247800]];
-                            var score = parseInt($(this).text()) + parseInt(feature.properties.b25077001);
-                            console.log("MHV_MOE Score = " + score);
-                            for (var i = 0; i < scale.length; i++) {
-                                $(this).text("$"+commafy(feature.properties.b25077_moe001));
-                                // if (score <= 247800) {
-                                //     $(this).addClass('good');
-                                // }
-                            }
-                        });
-                        $(".cv").each(function(index) {
-                            var scale = [['good', 0], ['neutral', 12], ['bad', 40]];
-                            var score = $(this).text();
-                            for (var i = 0; i < scale.length; i++) {
-                                // if (score <= 12) {
-                                //     $(this).addClass('good');
-                                // }
-                            }
-                        });
-                        $(".jobs_2006").each(function(index) {
-                            // var scale = [['bad', -50000], ['neutral', 0], ['good', 225000]];
-                            // var score = $(this).text();
-                            // console.log(score);
-                            // for (var i = 0; i < scale.length; i++) {
-                            //     if (score <= scale[i][1]) {
-                            //         $(this).addClass(scale[i][0]);
-                            //     }
-                            // }
-                            //if (filter != 'place') {
-                                var jobs_2006_text = commafy(feature.properties.sdo_jobs_2006.toFixed(0));
-                                $(this).text(jobs_2006_text);
-                                if (feature.properties.sdo_jobs_2006 == 0) {
-                                    $(this).text("Contact DOLA Analyst");
-                                }
-                            //}
-                        });
-                        $(".jobs_2015").each(function(index) {
-                            // var scale = [['bad', 50000], ['neutral', 100000], ['good', 225000]];
-                            // var score = $(this).text();
-                            // console.log(score);
-                            // for (var i = 0; i < scale.length; i++) {
-                            //     if (score <= scale[i][1]) {
-                            //         $(this).addClass(scale[i][0]);
-                            //     }
-                            // }
-                            //if (filter != 'place') {
-                                var jobs_2015_text = commafy(feature.properties.sdo_jobs_2015.toFixed(0));
-                                $(this).text(jobs_2015_text);
-                                if (feature.properties.sdo_jobs_2015 == 0) {
-                                    $(this).text("Contact DOLA Analyst");
-                                }
-                            //}
-                        });
-                        $(".job_change").each(function(index) {
-                            //if (filter != 'place') {    
-                                var scale = [['good', -100000], ['null', 0]];//, ['bad', 0]];
-                                var score = $(this).text();
-                                for (var i = 0; i < scale.length; i++) {
-                                    $(this).text(commafy(feature.properties.sdo_job_change.toFixed(0)));
-                                    if (score <= scale[i][1]) {
-                                        $(this).addClass('good');
-                                    }
-                                    if (feature.properties.sdo_jobs_2015 == 0) {
-                                        $(this).text("Contact DOLA Analyst");
-                                    }
-                                }
-                            //}
-                        });
-                        $(".unemp").each(function(index) {
-                            //if (filter != 'place') {
-                                var scale = [['null', 4.6], ['good', 8]];
-                                var score = $(this).text();
-                                for (var i = 0; i < scale.length; i++) {
-                                    $(this).text(feature.properties.bls_unemp_avg.toFixed(2)+"%");
-                                    if (score >= 4.6) {
-                                        $(this).addClass('good');
-                                    }
-                                    if (feature.properties.sdo_jobs_2015 == 0) {
-                                        $(this).text("Contact DOLA Analyst");
-                                    }
-                                }
-                            //}
-                        });
-                    });
+                    
                     console.log(title);
                     $("#export").click(function(){
                         $("#feature-info").tableToCSV(title);
@@ -935,7 +684,7 @@ var graphicScale = L.control.graphicScale().addTo(map);
         highlight: true
     },
     {
-        name: 'feature.properties.geoname',
+        name: 'feature.properties.first_city',
         displayKey: 'value',
         source: geojsonLayer
     }
