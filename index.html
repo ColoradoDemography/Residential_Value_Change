@@ -141,7 +141,7 @@
             </ul>
             <div class="tab-content" id="aboutTabsContent">
               <div class="tab-pane fade active in" id="about">
-                <p>Municipality Info Here</p></div>
+                <p>This data is provided by the <a href="https://dola.colorado.gov" target="_blank">Colorado Department of Local Affairs</a> and the <a href="https://www.cml.org" target="_blank">Colorado Municipal League</a></p></div>
                 <!--<p>Limited metadata is available <a href="https://docs.google.com/spreadsheets/d/1gaOjeXlLzQankggbhtrQq3HDEPfwwiXiPeSZrP6FjOs/edit?usp=sharing" target="_blank">here</a>.</p>-->
               <div id="disclaimer" class="tab-pane fade text-danger">
                 <p>The creator (DOLA) and contributors to this project do not guarantee the accuracy of any information presented, are not liable for any errors or omissions and are not responsible for determining fitness for use, either in this map or in its associated data. This data should not be considered an authoritative source of information.</p>
@@ -170,7 +170,7 @@
           
           
 <ul class="nav nav-tabs" id="tabContent">
-  <li class="active"><a href="#feature-info" data-toggle="tab">2017 Primary Factors</a>
+  <li class="active"><a href="#feature-info" data-toggle="tab">Municipality Information</a>
   </li>
   <!--<li><a href="#contact" data-toggle="tab">Contact</a>-->
   <!--</li>-->
@@ -185,11 +185,11 @@
           
           </div>
           <div class="modal-footer">
-            <div class="pull-left">Factor is highlighted green if Value meets Benchmark</div>
-            <div class="pull-left">See "Defining Disadvantaged Communities" and "Disadvantaged Communities Data Glossary" <a href="https://www.colorado.gov/pacific/cdphe/wq-general-srf-information" target="_blank">here:</a></a></div>
-            <div class="pull-left">Contact DOLA SRF Analyst for more information: <a href="mailto:dola_dlg_helpdesk@state.co.us">dola_dlg_helpdesk@state.co.us</a></div>
+            <!--<div class="pull-left">Factor is highlighted green if Value meets Benchmark</div>-->
+            <!--<div class="pull-left">See "Defining Disadvantaged Communities" and "Disadvantaged Communities Data Glossary" <a href="https://www.colorado.gov/pacific/cdphe/wq-general-srf-information" target="_blank">here:</a></a></div>-->
+            <!--<div class="pull-left">Contact DOLA SRF Analyst for more information: <a href="mailto:dola_dlg_helpdesk@state.co.us">dola_dlg_helpdesk@state.co.us</a></div>-->
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" id="export" data-export="export">Export Table</button>
+            <!--<button type="button" id="export" data-export="export">Export Table</button>-->
           </div>
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
@@ -225,7 +225,8 @@
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="assets/js/jquery.tabletoCSV.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script src="assets/js/typeahead.jquery.js"></script>    
+    <script src="assets/js/typeahead.jquery.js"></script>  
+    <script src="assets/js/leaflet.label.js"></script>
     <script src="assets/leafletv08/leaflet.js"></script>
     <script src="https://api.mapbox.com/mapbox.js/v2.2.1/mapbox.js"></script>
     <script src="assets/leafletajax/la.test.js"></script>

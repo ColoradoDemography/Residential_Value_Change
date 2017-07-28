@@ -67,110 +67,6 @@ function init() {
     coord.swlat = '';
     coord.swlng = '';
 
-
-    //Leaflet Custom Control
-    //create the custom control div in upper left
-    // L.Control.Command = L.Control.extend({
-    //     options: {
-    //         position: 'topleft',
-    //     },
-
-    //     onAdd: function(map) {
-
-    //         var controlDiv = L.DomUtil.create('div', 'leaflet-control-command');
-
-    //         var controlUI = L.DomUtil.create('div', 'leaflet-control-command-interior', controlDiv);
-    //         controlUI.title = 'Census Geography';
-    //         var textdiv = L.DomUtil.create('div', 'ctrldesc', controlUI);
-    //         var divsec = L.DomUtil.create('b', 'titletext', textdiv);
-    //         divsec.innerHTML = 'Choose a Geography';
-
-    //         var hrbreak = L.DomUtil.create('hr', '', controlUI);
-    //         hrbreak.id = "hrcss";
-
-    //         var opt1div = L.DomUtil.create('div', '', controlUI);
-    //         opt1div.id = 'opt1div';
-    //         var selectUI = L.DomUtil.create('select', 'seldiv', opt1div);
-    //         selectUI.title = 'Select District Category';
-
-    //         L.DomEvent
-    //             .addListener(selectUI, 'change', L.DomEvent.stopPropagation)
-    //             .addListener(selectUI, 'change', L.DomEvent.preventDefault)
-    //             .addListener(selectUI, 'change', refilter);
-
-    //         var option;
-    //         var inputdata = "Place||County||Tract||Block Group";
-
-    //         inputdata.split('||').forEach(function(item) {
-    //             option = document.createElement('option');
-    //             option.value = option.textContent = item;
-    //             selectUI.appendChild(option);
-    //         });
-
-    //         var opt2div = L.DomUtil.create('div', '', controlUI);
-    //         opt2div.id = 'opt2div';
-    //         opt2div.style.display = 'none';
-    //         opt2div.className = "form-group has-feedback";
-
-    //         var w = L.DomUtil.create('input', '', opt2div);
-
-    //         w.id = "slgid";
-    //         w.class = 'typeahead';
-    //         w.type = 'text';
-    //         w.placeholder = "Search Districts";
-    //         w.className = "form-control typeahead";
-
-    //         return controlDiv;
-    //     }
-    // });
-
-    // L.control.command = function() {
-    //     return new L.Control.Command();
-    // };
-    
-
-
-
-
-    //sets global variable 'filter' equal to a comma separated list of lgtypeids.  Then gets those shapes from database.
-    // function refilter() {
-
-    //     var ischecked = $('#ischk').is(':checked');
-    //     var districtfilter = $('.seldiv :selected').text();
-
-    //     switch (districtfilter) {
-    //         case 'County':
-    //             //filter = "50";
-    //             filter = 'county';
-    //             titleGeo = 'County';
-    //             break;
-    //         case 'Place':
-    //             //filter = "160";
-    //             filter = 'place';
-    //             titleGeo = 'Place';
-    //             break;
-    //         case 'Tract':
-    //             //filter = "140";
-    //             filter = 'tract';
-    //             titleGeo = 'Tract';
-    //             break;
-    //         case 'Block Group':
-    //             //filter = "150";
-    //             filter = 'bg';
-    //             titleGeo = 'BG';
-    //             break;
-    //     }
-
-    //     if (ischecked) {
-    //         active = '0';
-    //     } else {
-    //         active = '1';
-    //     }
-
-    //ajaxcall();
-
-    // }
-
     $(window).resize(function() {
         sizeLayerControl();
     });
@@ -289,28 +185,8 @@ function init() {
             'zIndex': 10
         };
 
-        //gets last digit of lgid.  colors shape per that digit (pseudo random color scheme)
-        //console.log(feature.properties);
-        // var districtfilter = $('.seldiv :selected').text();
-        
-        // switch (districtfilter) {
-        //     case 'County':
-        //         typical.color = "#5E5075";
-        //         return typical;
-        //     case 'Place':
-        //         typical.color = "#6DAF48";
-        //         return typical;
-        //     case 'Tract':
-        //         typical.color = "#CD4A31";
-        //         return typical;
-        //     case 'Block Group':
-        //         typical.color = "#B25BD2";
-        //         return typical;
-        // }
 
         return typical;
-
-
 
     }
 
@@ -586,9 +462,13 @@ var graphicScale = L.control.graphicScale().addTo(map);
     
     
     function onEachFeature(feature, layer) {
-
+        
+        
+        
         if (feature.properties){
-
+            
+            //layer.bindLabel(feature.properties.first_city).addTo(map).showLabel();
+            
             var tableColumns = "<tr><th>Field</th><th>Value</th></tr>";
             var bgname = "";
             var mhi_cv = feature.properties.b19013_moe001/1.645/feature.properties.b19013001*100;
@@ -596,48 +476,17 @@ var graphicScale = L.control.graphicScale().addTo(map);
 
             // if (feature.properties.sdo_jobs_2006 > 0) {
                 var content = "<br /><table class='table table-striped table-bordered table-condensed'>" + tableColumns
-                        + "<tr><th>Municipality</th><td class='mhi'>" + feature.properties.first_city + "</td></tr>"
-                        + "<tr><th style='text-indent:10px'>Population</th><td class='mhi_moe'>" + feature.properties.Population + "</td></tr>"
-                        + "<tr><th style='text-indent:10px'>Sales Tax</th><td class='cv'>" + feature.properties.SalesTax + "</td></tr>"
-                        + "<tr><th>Use Tax</th><td class='mhv'>" + feature.properties.UseTax + "</td></tr>"
-                        + "<tr><th style='text-indent:10px'>Mill Levy</th><td class='mhv_moe'>" + feature.properties.MillLevy + "</td></tr>"
-                        + "<tr><th style='text-indent:10px'>County(s)</th><td class='cv'>" + feature.properties.County + "</td></tr>"
-                        + "<tr><th>Charter Type</th><td class='unemp'>" + feature.properties.Charter + "</td></tr>"
-                        + "<tr><th>Website</th><td class='job_change'>" + feature.properties.Website + "</td></tr>"
+                        + "<tr><th>Municipality</th><td>" + feature.properties.first_city + "</td></tr>"
+                        + "<tr><th>Population</th><td>" + feature.properties.Population + "</td></tr>"
+                        + "<tr><th>Sales Tax</th><td>" + feature.properties.SalesTax + "</td></tr>"
+                        + "<tr><th>Use Tax</th><td>" + feature.properties.UseTax + "</td></tr>"
+                        + "<tr><th>Mill Levy</th><td>" + feature.properties.MillLevy + "</td></tr>"
+                        + "<tr><th>County(s)</th><td>" + feature.properties.County + "</td></tr>"
+                        + "<tr><th>Charter Type</th><td>" + feature.properties.Charter + "</td></tr>"
+                        + "<tr><th>Website</th><td>" + feature.properties.Website + "</td></tr>"
                         + "</table><br />";
-            // } else {
-            //      var content = "<br /><table class='table table-striped table-bordered table-condensed'>" + tableColumns
-            //             + "<tr><th>MHI</th><td class='mhi'>" + feature.properties.b19013001 + "</td><td>&#60;= $48,503 (80% of State MHI)</td></tr>"
-            //             + "<tr><th style='text-indent:10px'>MHI_MOE</th><td class='mhi_moe'>" + feature.properties.b19013_moe001 + "</td><td></td></tr>"
-            //             + "<tr style='border-bottom:3px solid black'><th style='text-indent:10px'>MHI_CV</th><td class='cv'>" + mhi_cv.toFixed(2) + "</td><td></td></tr>"
-            //             + "<tr><th>MHV</th><td class='mhv'>" + feature.properties.b25077001 + "</td><td>&#60;= $247,800 (100% of State MHV)</td></tr>"
-            //             + "<tr><th style='text-indent:10px'>MHV_MOE</th><td class='mhv_moe'>" + feature.properties.b25077_moe001 + "</td><td></td></tr>"
-            //             + "<tr style='border-bottom:3px solid black'><th style='text-indent:10px'>MHV_CV</th><td class='cv'>" + mhv_cv.toFixed(2) + "</td><td></td></tr>"
-            //             + "<tr><th>County 24-Month Unemployment</th><td class='unemp'>" + "Contact DOLA Analyst" + "</td><td>&#60;= 4.6%</td></tr>"
-            //             + "<tr><th>County 10-Year Jobs Change</th><td class='job_change'>" + "Contact DOLA Analyst" + "</td><td>&#60;= 0</td></tr>"
-            //             + "<tr><th style='text-indent:10px'>County Jobs 2006</th><td class='jobs_2006'>" + "Contact DOLA Analyst" + "</td><td></td></tr>"
-            //             + "<tr><th style='text-indent:10px'>County Jobs 2015</th><td class='jobs_2015'>" + "Contact DOLA Analyst" + "</td><td></td></tr>"
-            //             + "</table><br />";
-            // }
-            
-            // var geonum2text = feature.properties.geonum.toString();
-            // bgname = "BG " + geonum2text.substr(12,1) + ", Tract: " + geonum2text.substr(6,6);
 
-            // console.log(content);
-            // var altaddress = "";
-
-            // if (feature.properties.alt_address) {
-            //     altaddress = "<tr><th>Alt Address</th><td>" + feature.properties.alt_address + "</td></tr>";
-            // }
-
-            // var contact = "<br /><table class='table table-striped table-bordered table-condensed'>" + "<tr><th backgroundColor='red'>Mail Address</th><td backgroundColor='red'>" + feature.properties.mail_address + "</td></tr>" + altaddress + "<tr><th>City</th><td>" + feature.properties.mail_city + "</td></tr><tr><th>State</th><td>" + "CO" + "</td></tr><tr><th>Zip</th><td>" + feature.properties.mail_zip + "</td></tr></table><br />";
-
-            // if (geonum2text.length < 13) {
-            //     var title = titleGeo + ": " + feature.properties.geoname;
-            // } else {
             var title = feature.properties.first_city;
-            // }
-
 
             layer.on({
                 click: function(e) {
