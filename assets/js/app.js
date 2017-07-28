@@ -127,7 +127,7 @@ function init() {
          propertyName: 'first_city',
          marker: false,
          collapsed: false,
-         zoom: 14,
+         zoom: 10,
          textPlaceholder: 'Search Municipalities'
        });
 
@@ -225,7 +225,7 @@ var mapquestHYB = L.layerGroup([L.tileLayer("https://{s}.mqcdn.com/tiles/1.0.0/s
     });
 
     map = L.map("map", {
-        zoom: 8,
+        zoom: 7,
         center: [39, -105.5],
         layers: [Esri_WorldStreetMap],
         minZoom: 6,
@@ -438,7 +438,7 @@ var graphicScale = L.control.graphicScale().addTo(map);
         // Insert a headline into that popup
         if (titleGeo != "BG") {
             hed = $("<div></div>", {
-                text: titleGeo + ": " + fp.first_city,
+                text: fp.first_city,
                 css: {
                     fontSize: "16px",
                     marginBottom: "3px"
