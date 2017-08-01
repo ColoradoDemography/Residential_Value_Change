@@ -475,7 +475,7 @@ var graphicScale = L.control.graphicScale().addTo(map);
             var mhv_cv = feature.properties.b25077_moe001/1.645/feature.properties.b25077001*100;
 
             // if (feature.properties.sdo_jobs_2006 > 0) {
-                var content = "<br /><table class='table table-striped table-bordered table-condensed'>" + tableColumns
+                var content = "<br /><table class='table table-striped table-bordered table-condensed'>" //+ tableColumns
                         + "<tr><th>Municipality</th><td>" + feature.properties.first_city + "</td></tr>"
                         + "<tr><th>Population</th><td>" + commafy(feature.properties.Population) + "</td></tr>"
                         + "<tr><th>Sales Tax</th><td>" + feature.properties.SalesTax + "</td></tr>"
@@ -483,7 +483,7 @@ var graphicScale = L.control.graphicScale().addTo(map);
                         + "<tr><th>Mill Levy</th><td>" + feature.properties.MillLevy + "</td></tr>"
                         + "<tr><th>County(s)</th><td>" + feature.properties.County + "</td></tr>"
                         + "<tr><th>Charter Type</th><td>" + feature.properties.Charter + "</td></tr>"
-                        + "<tr><th>Website</th><td>" + feature.properties.Website + "</td></tr>"
+                        + "<tr><th>Website</th><td><a href='" + feature.properties.Website + "' target = '_blank'>" + feature.properties.Website + "</a></td></tr>"
                         + "</table><br />";
 
             var title = feature.properties.first_city;
