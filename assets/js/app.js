@@ -127,7 +127,7 @@ function init() {
          propertyName: 'first_city',
          marker: false,
          collapsed: false,
-         zoom: 10,
+         zoom: 12,
          textPlaceholder: 'Search Municipalities'
        });
 
@@ -477,7 +477,7 @@ var graphicScale = L.control.graphicScale().addTo(map);
             // if (feature.properties.sdo_jobs_2006 > 0) {
                 var content = "<br /><table class='table table-striped table-bordered table-condensed'>" + tableColumns
                         + "<tr><th>Municipality</th><td>" + feature.properties.first_city + "</td></tr>"
-                        + "<tr><th>Population</th><td>" + feature.properties.Population + "</td></tr>"
+                        + "<tr><th>Population</th><td>" + commafy(feature.properties.Population) + "</td></tr>"
                         + "<tr><th>Sales Tax</th><td>" + feature.properties.SalesTax + "</td></tr>"
                         + "<tr><th>Use Tax</th><td>" + feature.properties.UseTax + "</td></tr>"
                         + "<tr><th>Mill Levy</th><td>" + feature.properties.MillLevy + "</td></tr>"

@@ -257,7 +257,7 @@ input[type="radio"], input[type="checkbox"] {
 }
 
 .typeahead:focus {
-  border: 2px solid #0097cf;
+  border: 2px solid #f44242;
 }
 
 .tt-query {
@@ -294,12 +294,12 @@ input[type="radio"], input[type="checkbox"] {
 .tt-suggestion:hover {
   cursor: pointer;
   color: #fff;
-  background-color: #0097cf;
+  background-color: #f44242;
 }
 
 .tt-suggestion.tt-cursor {
   color: #fff;
-  background-color: #0097cf;
+  background-color: #f44242;
 
 }
 
