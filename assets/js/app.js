@@ -488,13 +488,13 @@ var graphicScale = L.control.graphicScale().addTo(map);
 
             var title = feature.properties.first_city;
             
-            var marijuana = "<br /><table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Mail Address</th><td>" + "</td></tr>" + "<tr><th>City</th><td>" + "</td></tr><tr><th>State</th><td>" + "</td></tr><tr><th>Zip</th><td>" + "</td></tr></table><br />";
+            //var marijuana = "<br /><table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Mail Address</th><td>" + "</td></tr>" + "<tr><th>City</th><td>" + "</td></tr><tr><th>State</th><td>" + "</td></tr><tr><th>Zip</th><td>" + "</td></tr></table><br />";
 
             layer.on({
                 click: function(e) {
                     $("#feature-title").html(title);
                     $("#feature-info").html(content);
-                    $("#marijuana").html(marijuana);
+                    //$("#marijuana").html(marijuana);
                     //$('#dolalink').attr('href', newlink);
                     
                     $("#featureModal").modal("show");
