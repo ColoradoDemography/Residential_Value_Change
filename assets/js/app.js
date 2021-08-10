@@ -497,6 +497,7 @@ var graphicScale = L.control.graphicScale().addTo(map);
                         + "<tr><th>County(s)</th><td>" + feature.properties.County + "</td></tr>"
                         + "<tr><th>Charter Type</th><td>" + feature.properties.Charter + "</td></tr>"
                         + "<tr><th>Website</th><td><a href='" + feature.properties.Website + "' target = '_blank'>" + feature.properties.Website + "</a></td></tr>"
+                        + "<tr><th>Notes</th><td>" + feature.properties.Notes + "</td></tr>"
                         + "</table><br />";
 
             var title = feature.properties.first_city;
