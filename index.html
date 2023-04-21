@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#000000">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Colorado Municipalities</title>
+    <title>Colorado County Residential Value Change</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
@@ -29,8 +29,6 @@
     <link rel="icon" sizes="196x196" href="assets/img/favicon-196.png">
     <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
     
-    
-    <!-- somewhere the default popup style got currupted.  workaround -->
     <style>
 .leaflet-popup-content-wrapper {
   background:#2c3e50;
@@ -76,41 +74,21 @@
     
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container-fluid">
-        <a class="pull-right" href="https://www.cml.org"><img style="height: 40px; margin-top: 5px;" src="assets/img/2018-09-18-CML-ICON-CMYK-COLOR-FINAL.JPG"></a>
+        
         <a class="pull-right" href="https://dola.colorado.gov"><img style="height: 40px; margin-top: 5px;" src="assets/img/triangles.png"></a>
         <div class="navbar-header">
           <div class="navbar-icon-container">
             <a href="#" class="navbar-icon pull-right visible-xs" id="nav-btn"><i class="fa fa-bars fa-lg white"></i></a>
             <a href="#" class="navbar-icon pull-right visible-xs" id="sidebar-toggle-btn"><i class="fa fa-search fa-lg white"></i></a>
           </div>
-          <a class="navbar-brand" href="#">Municipality Data</a>
+          <a class="navbar-brand" href="#">Value Change by County</a>
         </div>
         <div class="navbar-collapse collapse">
-          <!--<form class="navbar-form navbar-right" role="search">-->
-          <!--  <div id="the-basics"  class="form-group has-feedback navbar-right">-->
-          <!--      <input id="searchbox" type="text" placeholder="Search" class="form-control typeahead">-->
-          <!--      <span id="searchicon" class="fa fa-search form-control-feedback"></span>-->
-          <!--  </div>-->
-          <!--</form>-->
+          
           <ul class="nav navbar-nav">
             <li><a href="#" data-toggle="collapse" data-target=".navbar-collapse.in" id="about-btn"><i class="fa fa-question-circle white"></i>&nbsp;&nbsp;About</a></li>
 
-            <!--<li class="dropdown">-->
-            <!--    <a class="dropdown-toggle" id="downloadDrop" href="#" role="button" data-toggle="dropdown"><i class="fa fa-cloud-download white"></i>&nbsp;&nbsp;Download <b class="caret"></b></a>-->
-            <!--    <ul class="dropdown-menu">-->
-            <!--      <li><a href="https://storage.googleapis.com/co-publicdata/dlmetro.zip" target="_blank" id="dlmetro" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Metropolitan Districts</a></li>-->
-            <!--      <li><a href="https://storage.googleapis.com/co-publicdata/dlpark.zip" target="_blank" id="dlpark" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Park and Recreation Districts</a></li>-->
-            <!--      <li><a href="https://storage.googleapis.com/co-publicdata/dlfire.zip" target="_blank" id="dlfire" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Fire Protection Districts</a></li>-->
-            <!--      <li><a href="https://storage.googleapis.com/co-publicdata/dlhospital.zip" target="_blank" id="dlhospital" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Hospital Districts</a></li>-->
-            <!--      <li><a href="https://storage.googleapis.com/co-publicdata/dlwatersan.zip" target="_blank" id="dlwatersan" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Water and Sanitation Districts</a></li>-->
-            <!--      <li><a href="https://storage.googleapis.com/co-publicdata/dllibrary.zip" target="_blank" id="dllibrary" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Library Districts</a></li>-->
-            <!--      <li><a href="https://storage.googleapis.com/co-publicdata/dlschool.zip" target="_blank" id="dlschool" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;School Districts</a></li>-->
-            <!--      <li><a href="https://storage.googleapis.com/co-publicdata/dlsoil.zip" target="_blank" id="dlsoil" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Soil Conservation Districts</a></li>-->
-            <!--      <li><a href="https://storage.googleapis.com/co-publicdata/dlcemetary.zip" target="_blank" id="dlcemetary" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;Cemetary Districts</a></li>-->
-            <!--      <li><a href="https://storage.googleapis.com/co-publicdata/dlall.zip" target="_blank" id="dlall" data-toggle="collapse" data-target=".navbar-collapse.in"><i class="fa fa-download"></i>&nbsp;&nbsp;All Districts</a></li>-->
-            <!--    </ul>-->
-            <!--</li>-->
-
+           
           </ul>
         </div><!--/.navbar-collapse -->
       </div>
@@ -134,7 +112,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">Colorado Municipality Information</h4>
+            <h4 class="modal-title">Colorado County Information</h4>
           </div>
           <div class="modal-body">
             <ul class="nav nav-tabs" id="aboutTabs">
@@ -143,8 +121,8 @@
             </ul>
             <div class="tab-content" id="aboutTabsContent">
               <div class="tab-pane fade active in" id="about">
-                <p>This data is provided by the <a href="https://dola.colorado.gov" target="_blank">Colorado Department of Local Affairs</a> and the <a href="https://www.cml.org" target="_blank">Colorado Municipal League</a></p></div>
-                <!--<p>Limited metadata is available <a href="https://docs.google.com/spreadsheets/d/1gaOjeXlLzQankggbhtrQq3HDEPfwwiXiPeSZrP6FjOs/edit?usp=sharing" target="_blank">here</a>.</p>-->
+                <p>This data is provided by the <a href="https://dola.colorado.gov" target="_blank">Colorado Department of Local Affairs</a></p></div>
+                
               <div id="disclaimer" class="tab-pane fade text-danger">
                 <p>The creator (DOLA) and contributors to this project do not guarantee the accuracy of any information presented, are not liable for any errors or omissions and are not responsible for determining fitness for use, either in this map or in its associated data. This data should not be considered an authoritative source of information.</p>
               </div>
@@ -172,30 +150,17 @@
           
           
 <ul class="nav nav-tabs" id="tabContent">
-  <li class="active"><a href="#feature-info" data-toggle="tab">Municipality Information</a>
+  <li class="active"><a href="#feature-info" data-toggle="tab">Value Change Information</a>
   </li>
-  <!--<li><a href="#marijuana" data-toggle="tab">Marijuana</a>-->
-  <!--</li>-->
 </ul>
 
 <div class="tab-content">
   <div class="tab-pane active" id="feature-info">
   </div>
 
-  <!--<div class="tab-pane" id="marijuana">
-  <!--</div>
-          
-          </div>
-          <div class="modal-footer">
-            <!--<div class="pull-left">Factor is highlighted green if Value meets Benchmark</div>-->
-            <!--<div class="pull-left">See "Defining Disadvantaged Communities" and "Disadvantaged Communities Data Glossary" <a href="https://www.colorado.gov/pacific/cdphe/wq-general-srf-information" target="_blank">here:</a></a></div>-->
-            <!--<div class="pull-left">Contact DOLA SRF Analyst for more information: <a href="mailto:dola_dlg_helpdesk@state.co.us">dola_dlg_helpdesk@state.co.us</a></div>-->
+  
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <!--<button type="button" id="export" data-export="export">Export Table</button>-->
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+            
     </div>
     
     <div class="modal fade" id="attributionModal" tabindex="-1" role="dialog">

@@ -1,60 +1,11 @@
-//app moving pieces: To Update as Needed
-//------------------
-
-//lgbasic table in postgres dola.bounds.lgbasic - use script: _connectOracle/lgbasic.php (on lajavaas) to create JSON.  use script: CO_FS_Data_PHP/load_lgbasic.php to load into Postgres
-//lg2cnty table in postgres dola.bounds.lg2cnty - use script: _connectOracle/lg2cnty.php (on lajavaas) to create JSON.  use script: CO_FS_Data_PHP/load_lg2cnty.php to load into Postgres
-
-//districts table in dola.bounds - as needed when district boundaries change
-
-
-/*global $*/
-
-
-//get limlevy data -- dont do anything else until then
-
-// var limlevy;
-// var districtsonly = [];
-// var districtsbb = [];
-
-// //geocoder values
-// $.getJSON("https://storage.googleapis.com/co-publicdata/geopts.json", function(geopts) {
-
-//     //create data objects for geocoder
-//     for (i = 0; i < geopts.length; i++) {
-//         districtsonly.push(geopts[i].lgid);
-//         districtsonly.push(geopts[i].lgname)
-//         districtsbb.push(geopts[i].bbox);
-//         districtsbb.push(geopts[i].bbox);
-//     }
-
-//     $.getJSON("https://dola.colorado.gov/gis-tmp/limlevy.json", function(json) {
-//         limlevy = json;
-//         init();
-
-//     });
-// });
-
-// $(function() {
-//     $("#feature-info.mhi").each(function(index) {
-//         var scale = [['bad', 50000], ['neutral', 10000], ['good', 225000]];
-//         var score = $(this).text();
-//         console.log(score);
-//         for (var i = 0; i < scale.length; i++) {
-//             if (score <= scale[i][1]) {
-//                 $(this).addClass(scale[i][0]);
-//             }
-//         }
-//     });
-// });
-
 init();
 
 function init() {
 
 
     var map, globalbusy, geojsonLayer, lastzoom, active = '1',
-        filter = 'muni',
-        titleGeo = 'Muni',
+        filter = 'county',
+        titleGeo = 'County',
         limit = 1000,
         lgid = "";
     //active = whether to show inactive districts.  Active=0 : show all, including inactive.  Active=1 : show only active
@@ -113,7 +64,7 @@ function init() {
         newbounds = (coord.swlng - diff2) + "," + (coord.swlat - diff1) + "," + (coord.nelng + diff2) + "," + (coord.nelat + diff1);
         
         //geojsonLayer.refresh("https://gis.dola.colorado.gov/capi/geojson?limit=99999&db=acs1115&schema=data&table=b19013&sumlev=" + filter + "&type=json&state=8"); //add a new layer replacing whatever is there
-        geojsonLayer.refresh("assets/data/muni.geojson")
+        geojsonLayer.refresh("assets/data/county.geojson")
         map.addLayer(geojsonLayer);
         
        if (window.searchControl)
@@ -124,11 +75,11 @@ function init() {
        // Add search gadget for this layer      
        window.searchControl= new L.control.search({
          layer: geojsonLayer, 
-         propertyName: 'first_city',
+         propertyName: 'NAME20',
          marker: false,
          collapsed: false,
          zoom: 12,
-         textPlaceholder: 'Search Municipalities'
+         textPlaceholder: 'Search Counties'
        });
 
        map.addControl(window.searchControl);
@@ -176,7 +127,7 @@ function init() {
     function stylefunc(feature) {
 
         var typical = {
-            color: "green",
+            color: "blue",
             weight: 1,
             fill: true,
             opacity: 1,
@@ -254,11 +205,6 @@ var graphicScale = L.control.graphicScale().addTo(map);
     var nolabel = L.tileLayer('https://api.mapbox.com/styles/v1/statecodemog/ciq0yl9wf000ebpndverm5ler/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic3RhdGVjb2RlbW9nIiwiYSI6Ikp0Sk1tSmsifQ.hl44-VjKTJNEP5pgDFcFPg', {
         attribution: '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>'
     });
-    
-    // var LeafletFilterControl = L.control.command({
-    //     postion: 'topleft'
-    // });
-    // map.addControl(LeafletFilterControl);
 
 
     /* Attribution control */ //bootleaf
@@ -451,7 +397,7 @@ var graphicScale = L.control.graphicScale().addTo(map);
         // Insert a headline into that popup
         if (titleGeo != "BG") {
             hed = $("<div></div>", {
-                text: fp.first_city,
+                text: fp.NAME20 + " County",
                 css: {
                     fontSize: "16px",
                     marginBottom: "3px"
@@ -483,33 +429,31 @@ var graphicScale = L.control.graphicScale().addTo(map);
             //layer.bindLabel(feature.properties.first_city).addTo(map).showLabel();
             
             var tableColumns = "<tr><th>Field</th><th>Value</th></tr>";
-            var bgname = "";
-            var mhi_cv = feature.properties.b19013_moe001/1.645/feature.properties.b19013001*100;
-            var mhv_cv = feature.properties.b25077_moe001/1.645/feature.properties.b25077001*100;
+           
 
             // if (feature.properties.sdo_jobs_2006 > 0) {
                 var content = "<br /><table class='table table-striped table-bordered table-condensed'>" //+ tableColumns
-                        + "<tr><th>Municipality</th><td>" + feature.properties.first_city + "</td></tr>"
-                        + "<tr><th>Population</th><td>" + commafy(feature.properties.Population) + "</td></tr>"
-                        + "<tr><th>Sales Tax</th><td>" + feature.properties.SalesTax + "</td></tr>"
-                        + "<tr><th>Use Tax</th><td>" + feature.properties.UseTax + "</td></tr>"
-                        + "<tr><th>Mill Levy</th><td>" + feature.properties.MillLevy + "</td></tr>"
-                        + "<tr><th>County(s)</th><td>" + feature.properties.County + "</td></tr>"
-                        + "<tr><th>Charter Type</th><td>" + feature.properties.Charter + "</td></tr>"
-                        + "<tr><th>Website</th><td><a href='" + feature.properties.Website + "' target = '_blank'>" + feature.properties.Website + "</a></td></tr>"
-                        + "<tr><th>Notes</th><td>" + feature.properties.Notes + "</td></tr>"
+                        //+ "<tr><th>County</th><td>" + feature.properties.NAME20 + "</td></tr>"
+                        + "<tr><th>Response #</th><td>" + feature.properties.RESPNUM + "</td></tr>"
+                        + "<tr><th>Agriculture</th><td>" + feature.properties.AG.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
+                        + "<tr><th>Commercial</th><td>" + feature.properties.COMM.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
+                        + "<tr><th>Industrial</th><td>" + feature.properties.IND.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
+                        + "<tr><th>Natural Resources</th><td>" + feature.properties.NATRES.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
+                        + "<tr><th>Producing Mines</th><td>" + feature.properties.MINES.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
+                        + "<tr><th>Residential</th><td>" + feature.properties.RES.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
+                        + "<tr><th>State Assessed</th><td>" + feature.properties.STATE_A.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
+                        + "<tr><th>Vacant Land</th><td>" + feature.properties.VACANT.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
+                        + "<tr><th>Comments</th><td>" + feature.properties.COMMENTS + "</td></tr>"
                         + "</table><br />";
 
-            var title = feature.properties.first_city;
+            var title = feature.properties.NAME20 + " County";
             
-            //var marijuana = "<br /><table class='table table-striped table-bordered table-condensed'>" + "<tr><th>Mail Address</th><td>" + "</td></tr>" + "<tr><th>City</th><td>" + "</td></tr><tr><th>State</th><td>" + "</td></tr><tr><th>Zip</th><td>" + "</td></tr></table><br />";
 
             layer.on({
                 click: function(e) {
                     $("#feature-title").html(title);
                     $("#feature-info").html(content);
-                    //$("#marijuana").html(marijuana);
-                    //$('#dolalink').attr('href', newlink);
+
                     
                     $("#featureModal").modal("show");
                     this.bringToBack(); //to deal with overlapping features.  click again and obscured feature is now on top
@@ -549,7 +493,7 @@ var graphicScale = L.control.graphicScale().addTo(map);
         highlight: true
     },
     {
-        name: 'feature.properties.first_city',
+        name: 'feature.properties.NAME20',
         displayKey: 'value',
         source: geojsonLayer
     }
