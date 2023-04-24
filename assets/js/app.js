@@ -434,7 +434,7 @@ var graphicScale = L.control.graphicScale().addTo(map);
             // if (feature.properties.sdo_jobs_2006 > 0) {
                 var content = "<br /><table class='table table-striped table-bordered table-condensed'>" //+ tableColumns
                         //+ "<tr><th>County</th><td>" + feature.properties.NAME20 + "</td></tr>"
-                        + "<tr><th>Response #</th><td>" + feature.properties.RESPNUM + "</td></tr>"
+                        //+ "<tr><th>Response #</th><td>" + feature.properties.RESPNUM + "</td></tr>"
                         + "<tr><th>Agriculture</th><td>" + feature.properties.AG.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
                         + "<tr><th>Commercial</th><td>" + feature.properties.COMM.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
                         + "<tr><th>Industrial</th><td>" + feature.properties.IND.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
@@ -443,7 +443,7 @@ var graphicScale = L.control.graphicScale().addTo(map);
                         + "<tr><th>Residential</th><td>" + feature.properties.RES.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
                         + "<tr><th>State Assessed</th><td>" + feature.properties.STATE_A.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
                         + "<tr><th>Vacant Land</th><td>" + feature.properties.VACANT.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
-                        + "<tr><th>Comments</th><td>" + feature.properties.COMMENTS + "</td></tr>"
+                        //+ "<tr><th>Comments</th><td>" + feature.properties.COMMENTS + "</td></tr>"
                         + "</table><br />";
 
             var title = feature.properties.NAME20 + " County";
