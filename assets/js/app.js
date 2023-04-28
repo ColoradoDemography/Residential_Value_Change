@@ -438,10 +438,10 @@ var graphicScale = L.control.graphicScale().addTo(map);
                         + "<tr><th>Agriculture</th><td>" + feature.properties.AG.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
                         + "<tr><th>Commercial</th><td>" + feature.properties.COMM.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
                         + "<tr><th>Industrial</th><td>" + feature.properties.IND.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
-                        + "<tr><th>Natural Resources</th><td>" + feature.properties.NATRES.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
-                        + "<tr><th>Producing Mines</th><td>" + feature.properties.MINES.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
+                        //+ "<tr><th>Natural Resources</th><td>" + feature.properties.NATRES.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
+                        //+ "<tr><th>Producing Mines</th><td>" + feature.properties.MINES.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
                         + "<tr><th>Residential</th><td>" + feature.properties.RES.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
-                        + "<tr><th>State Assessed</th><td>" + feature.properties.STATE_A.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
+                        //+ "<tr><th>State Assessed</th><td>" + feature.properties.STATE_A.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
                         + "<tr><th>Vacant Land</th><td>" + feature.properties.VACANT.toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2}) + "</td></tr>"
                         //+ "<tr><th>Comments</th><td>" + feature.properties.COMMENTS + "</td></tr>"
                         + "</table><br />";
